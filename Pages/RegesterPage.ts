@@ -10,12 +10,6 @@ export default class RegesterPage{
 
 
 
-
-
-    
-
-
-
     constructor(page : Page){
         this.page = page;
         this.fname_textbox = page.locator('//input[@placeholder="First Name"]');
