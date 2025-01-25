@@ -5,10 +5,6 @@ test.describe('demoapps', async()=>{
     test('user regester', async({page, regesterpage})=>{
 
 
-
-        
-        
-
         await page.goto("https://demo.automationtesting.in/Register.html");
 
         await regesterpage.userReg("prasad", "vara");
