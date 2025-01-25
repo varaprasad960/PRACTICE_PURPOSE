@@ -1,38 +1,48 @@
 name: Playwright Tests
+
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # Use Windows-based runner
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    # Step 1: Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Set up Node.js environment
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
       with:
         node-version: lts/*
 
+    # Step 3: Install dependencies
     - name: Install dependencies
       run: npm ci
 
+    # Step 4: Install Playwright browsers
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    - name: Run Playwright tests
+    # Step 5: Run Playwright tests
+    - name: Run Playwright Tests
       run: npx playwright test
 
+    # Step 6: Upload the Playwright HTML report as an artifact
     - name: Upload Playwright Report
       uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+        path: playwright-report/  # Ensure this path exists on Windows
 
+    # Step 7: Send Playwright report via email
     - name: Send Email with Playwright Report
       uses: dawidd6/action-send-mail@v3
       with:
@@ -46,6 +56,7 @@ jobs:
         # content_type: text/html
         body: |
           <h3>Playwright Test Report</h3>
-          <p>The Playwright test run has been completed. The detailed report is attached.</p>
+          <p>The Playwright test run has been completed. The detailed report is attached below:</p>
         attachments: |
           playwright-report/index.html
+
