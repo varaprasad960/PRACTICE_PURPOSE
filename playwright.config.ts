@@ -35,7 +35,7 @@ export default defineConfig({
     // baseURL: 'http://127.0.0.1:3000',
 
     viewport: null,
-    headless: !true,
+    headless: true,
     launchOptions: { args: ["--start-maximized"],slowMo:1000},
     actionTimeout: 10000,
     channel: "chrome",
